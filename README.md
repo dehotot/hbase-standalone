@@ -1,5 +1,5 @@
 # hbase-standalone
-a hbase cluster without hdfs
+hbase cluster just needs a reliable shared filesystem between nodes. *The shared filesystem doesn't need to be hdfs!*
 
 # this deployment
 This is a small-to-medium sized deployment of hbase **without** hadoop/hdfs.
@@ -11,9 +11,7 @@ Kubernetes configs in the `k8s/` directory will run a cluster of 1 hbase master 
 As you can tell from some of the DNS namespaces it was originally intended to be the backend for an OpenTSDB db.
 
 # what, no hadoop/hdfs?
-hbase needs a stable and reliable shared filesystem to cluster. **The shared filesystem does not need to be hdfs!**
-
-If you have a reliable shared filesystem such as an NFS on Netapp, or Lustre, GPFS etc shared between your servers, you can create a hbase cluster without hadoop hdfs.
+If you have a *reliable* cluster filesystem such as an NFS on Netapp, or Lustre, GPFS etc, you can create a hbase cluster without hadoop hdfs.
 
 # what is included
 The no-hdfs hbase deployment is described using Docker images.
