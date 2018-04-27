@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: opentsdb
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: metrics
+  namespace: opentsdb
+spec:
+  capacity:
+    storage: 500G
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: netapp.mycompany
+    path: "/statsdb"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: metrics
+  namespace: opentsdb
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+     storage: 500G

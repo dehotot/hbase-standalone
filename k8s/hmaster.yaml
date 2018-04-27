@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hbase
+  namespace: opentsdb
+  labels:
+    app: hmaster
+spec:
+  externalIPs:
+    - None
+  ports:
+  - name: web
+    port: 80
+    targetPort: 16010
+  selector:
+    app: hmaster
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hmaster
+  namespace: opentsdb
+  labels:
+    app: hmaster
+spec:
+  ports:
+  - name: zookeeper
+    port: 2181
+  - name: hmaster
+    port: 16000
+  - name: web
+    port: 16010
+  clusterIP: None
+  selector:
+    app: hmaster
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hmaster
+  namespace: opentsdb
+spec:
+  selector:
+    matchLabels:
+      app: hmaster # has to match .spec.template.metadata.labels
+  serviceName: "hmaster"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hmaster # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: metrics
+        persistentVolumeClaim:
+          claimName: metrics
+
+      containers:
+      - name: hmaster
+        image: docker-registry.diamond.ac.uk/opentsdb/hbase:latest
+        command: ["/start-hmaster.sh"]
+        resources:
+          limits:
+            memory: "16Gi"
+        env:
+          - name: HBASE_MASTER_OPTS
+            value: "-Xms16G -Xmx16g"
+          - name: HBASE_HEAPSIZE
+            value: "16G"
+        ports:
+        - containerPort: 2181
+        - containerPort: 16000
+        - containerPort: 16010
+        volumeMounts:
+        - name: metrics
+          mountPath: /hbase-data

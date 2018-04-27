@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: regionserver
+  namespace: opentsdb
+  labels:
+    app: regionserver
+spec:
+  ports:
+  - port: 16020
+    name: regionserver-data
+  - port: 16030
+    name: regionserver-web
+  clusterIP: None
+  selector:
+    app: regionserver
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: regionserver
+  namespace: opentsdb
+spec:
+  selector:
+    matchLabels:
+      app: regionserver  # has to match .spec.template.metadata.labels
+  serviceName: "regionserver"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: regionserver  # has to match .spec.selector.matchLabels
+    spec:
+      volumes:
+      - name: metrics
+        persistentVolumeClaim:
+          claimName: metrics
+
+      containers:
+      - name: regionserver
+        image: docker-registry.diamond.ac.uk/opentsdb/hbase:latest
+        command: ["/start-regionserver.sh"]
+        resources:
+          limits:
+            memory: "16Gi"
+        env:
+          - name: HBASE_MASTER_OPTS
+            value: "-Xms16G -Xmx16g"
+          - name: HBASE_HEAPSIZE
+            value: "16G"
+        ports:
+        - containerPort: 16200
+        - containerPort: 16300
+        volumeMounts:
+        - name: metrics
+          mountPath: /hbase-data

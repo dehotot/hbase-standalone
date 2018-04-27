@@ -1,0 +1,2 @@
+regionserver-0.regionserver.opentsdb.svc.cluster.local
+regionserver-1.regionserver.opentsdb.svc.cluster.local
