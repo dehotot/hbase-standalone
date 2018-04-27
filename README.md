@@ -8,10 +8,10 @@ It's a proof-of-concept to show that you can deploy a minimal hbase cluster like
 
 Kubernetes configs in the `k8s/` directory will run a cluster of 1 hbase master and 2 regionserver nodes.
 
-As you can tell from some of the DNS namespaces ut was originally intended to be the backend for an OpenTSDB db.
+As you can tell from some of the DNS namespaces it was originally intended to be the backend for an OpenTSDB db.
 
 # what, no hadoop/hdfs?
-hbase needs a stable and reliable shared filesystem to cluster. **The filesystem does not need to be hdfs!**
+hbase needs a stable and reliable shared filesystem to cluster. **The shared filesystem does not need to be hdfs!**
 
 If you have a reliable shared filesystem such as an NFS on Netapp, or Lustre, GPFS etc shared between your servers, you can create a hbase cluster without hadoop hdfs.
 
