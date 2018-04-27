@@ -1,5 +1,5 @@
 # hbase-standalone
-running hbase without hdfs
+a hbase cluster without hdfs
 
 # this deployment
 This is a small-to-medium sized deployment of hbase **without** hadoop/hdfs.
