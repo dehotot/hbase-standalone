@@ -71,7 +71,6 @@ Because Kubernetes gives reliablily to the node roles, and we use this cluster t
 
 We use the Zookeeper that comes prebuilt with hbase.
 
-
 # intended purpose
 The intended purpose is only to teach and demonstrate that you can run hbase without hdfs.
 
@@ -80,3 +79,6 @@ It's not intended for production. You need to evaluate the advice for your own p
 No warranty is given or implied.
 
 It is not advised to use it to run your local particle accelerator ;)
+
+# thanks
+Thanks to https://github.com/HariSekhon @HariSekhon for the original inspiration and starting point.
